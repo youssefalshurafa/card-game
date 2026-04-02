@@ -3,7 +3,7 @@ import { getProjectOverview } from '../lib/card-game-data';
 import CardGallery from './components/CardGallery';
 
 export const metadata = {
- title: 'Ethiopia Signal Management Card Game',
+ title: 'Signal Management Card Game',
  description: 'Challenge cards for public health emergency signal management training.',
 };
 
