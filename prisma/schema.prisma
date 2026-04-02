@@ -1,0 +1,177 @@
+generator client {
+ provider = "prisma-client-js"
+}
+
+datasource db {
+ provider = "sqlite"
+ url      = env("DATABASE_URL")
+}
+
+model GameProject {
+ id           String   @id @default(cuid())
+ name         String
+ slug         String   @unique
+ description  String?
+ settingsJson String?
+ decks        Deck[]
+ assets       Asset[]
+ createdAt    DateTime @default(now())
+ updatedAt    DateTime @updatedAt
+}
+
+model Deck {
+ id          String         @id @default(cuid())
+ projectId   String
+ name        String
+ slug        String
+ description String?
+ cardWidth   Int            @default(750)
+ cardHeight  Int            @default(1050)
+ themeJson   String?
+ sortOrder   Int            @default(0)
+ createdAt   DateTime       @default(now())
+ updatedAt   DateTime       @updatedAt
+ project     GameProject    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+ cards       Card[]
+ templates   CardTemplate[]
+
+ @@unique([projectId, slug])
+ @@index([projectId, sortOrder])
+}
+
+model CardTemplate {
+ id          String         @id @default(cuid())
+ deckId      String
+ name        String
+ description String?
+ layoutJson  String?
+ styleJson   String?
+ sortOrder   Int            @default(0)
+ createdAt   DateTime       @default(now())
+ updatedAt   DateTime       @updatedAt
+ deck        Deck           @relation(fields: [deckId], references: [id], onDelete: Cascade)
+ cards       Card[]
+ faces       TemplateFace[]
+
+ @@index([deckId, sortOrder])
+}
+
+model TemplateFace {
+ id                String            @id @default(cuid())
+ templateId        String
+ side              String
+ backgroundAssetId String?
+ backgroundJson    String?
+ createdAt         DateTime          @default(now())
+ updatedAt         DateTime          @updatedAt
+ template          CardTemplate      @relation(fields: [templateId], references: [id], onDelete: Cascade)
+ backgroundAsset   Asset?            @relation("TemplateFaceBackground", fields: [backgroundAssetId], references: [id], onDelete: SetNull)
+ elements          TemplateElement[]
+
+ @@unique([templateId, side])
+}
+
+model TemplateElement {
+ id           String       @id @default(cuid())
+ faceId       String
+ key          String
+ label        String?
+ type         String
+ contentJson  String?
+ styleJson    String?
+ positionJson String?
+ behaviorJson String?
+ sortOrder    Int          @default(0)
+ createdAt    DateTime     @default(now())
+ updatedAt    DateTime     @updatedAt
+ face         TemplateFace @relation(fields: [faceId], references: [id], onDelete: Cascade)
+
+ @@unique([faceId, key])
+ @@index([faceId, sortOrder])
+}
+
+model Card {
+ id           String        @id @default(cuid())
+ deckId       String
+ templateId   String?
+ name         String
+ slug         String
+ status       String        @default("draft")
+ metadataJson String?
+ sortOrder    Int           @default(0)
+ createdAt    DateTime      @default(now())
+ updatedAt    DateTime      @updatedAt
+ deck         Deck          @relation(fields: [deckId], references: [id], onDelete: Cascade)
+ template     CardTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+ faces        CardFace[]
+ revisions    CardRevision[]
+
+ @@unique([deckId, slug])
+ @@index([deckId, sortOrder])
+}
+
+model CardFace {
+ id                String        @id @default(cuid())
+ cardId            String
+ side              String
+ name              String?
+ backgroundAssetId String?
+ backgroundJson    String?
+ createdAt         DateTime      @default(now())
+ updatedAt         DateTime      @updatedAt
+ card              Card          @relation(fields: [cardId], references: [id], onDelete: Cascade)
+ backgroundAsset   Asset?        @relation("CardFaceBackground", fields: [backgroundAssetId], references: [id], onDelete: SetNull)
+ elements          CardElement[]
+
+ @@unique([cardId, side])
+}
+
+model CardElement {
+ id           String   @id @default(cuid())
+ faceId       String
+ key          String
+ label        String?
+ type         String
+ valueJson    String?
+ styleJson    String?
+ positionJson String?
+ bindingJson  String?
+ isEditable   Boolean  @default(true)
+ sortOrder    Int      @default(0)
+ createdAt    DateTime @default(now())
+ updatedAt    DateTime @updatedAt
+ face         CardFace @relation(fields: [faceId], references: [id], onDelete: Cascade)
+
+ @@unique([faceId, key])
+ @@index([faceId, sortOrder])
+}
+
+model Asset {
+ id                      String         @id @default(cuid())
+ projectId               String
+ name                    String
+ kind                    String
+ mimeType                String?
+ url                     String
+ altText                 String?
+ metaJson                String?
+ createdAt               DateTime       @default(now())
+ updatedAt               DateTime       @updatedAt
+ project                 GameProject    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+ templateFaceBackgrounds TemplateFace[] @relation("TemplateFaceBackground")
+ cardFaceBackgrounds     CardFace[]     @relation("CardFaceBackground")
+
+ @@index([projectId, kind])
+}
+
+model CardRevision {
+ id           String   @id @default(cuid())
+ cardId       String
+ version      Int
+ snapshotJson String
+ changeNote   String?
+ createdAt    DateTime @default(now())
+ card         Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+ @@unique([cardId, version])
+}
