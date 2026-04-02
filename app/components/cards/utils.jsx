@@ -1,4 +1,5 @@
 import EditableText from '../EditableText';
+import EditableImage from '../EditableImage';
 
 export function getField(card, key) {
  const face = card.faces?.[0];
@@ -50,18 +51,52 @@ export function Field({ fields, fieldKey, editable, onFieldChange, className, ta
  return <Tag className={className}>{value}</Tag>;
 }
 
+export function ImageField({ fields, fieldKey, editable, onFieldChange, className, placeholder }) {
+ const value = fields?.[fieldKey] ?? '';
+
+ if (editable) {
+  return (
+   <EditableImage
+    value={value}
+    fieldKey={fieldKey}
+    onSave={onFieldChange}
+    className={className}
+    placeholder={placeholder || 'Click to add image'}
+   />
+  );
+ }
+
+ const hasImage = value && value !== '' && !value.startsWith('{');
+ if (hasImage) {
+  return (
+   <img
+    src={value}
+    alt=""
+    className={`${className || ''} object-cover`}
+   />
+  );
+ }
+ return <div className={`${className || ''} flex items-center justify-center bg-slate-700/50 text-[8px] text-slate-400`}>{placeholder || 'No image'}</div>;
+}
+
 export function ChallengeHeader({ card }) {
  const num = card.metadata?.challengeNumber ?? '';
  const label = card.metadata?.challengeLabel ?? '';
  const difficulty = getDifficulty(card);
 
  return (
-  <div className="flex items-center justify-between px-4 py-2 bg-indigo-950/80 backdrop-blur">
-   <div className="flex items-center gap-2">
-    <span className="bg-white/20 text-[10px] font-mono font-bold px-2 py-0.5 rounded">{num}</span>
-    <span className="text-sm font-semibold text-white">{label}</span>
+  <div className="relative overflow-hidden bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700 px-4 py-2.5">
+   {/* Orange diagonal accent stripes */}
+   <div className="absolute -left-3 -top-3 h-16 w-16 rotate-45 bg-amber-500/30" />
+   <div className="absolute -right-3 -top-3 h-16 w-16 rotate-45 bg-amber-500/30" />
+
+   <div className="relative flex items-center justify-between">
+    <p className="text-lg font-extrabold tracking-tight text-white drop-shadow">{label}</p>
+    <div className="flex items-center gap-2">
+     <DifficultyStars level={difficulty} />
+     <span className="rounded-md bg-teal-900/70 px-2 py-0.5 text-[10px] font-mono font-bold text-teal-200">{num}</span>
+    </div>
    </div>
-   <DifficultyStars level={difficulty} />
   </div>
  );
 }

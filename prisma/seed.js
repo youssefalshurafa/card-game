@@ -17,7 +17,8 @@ const challengeCards = [
         elements: [
             { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Ethiopia 24' } },
             { key: 'time', label: 'Time', type: 'text', value: { text: '16:00' } },
-            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'BREAKING NEWS' } },
+            { key: 'news_image', label: 'News Photo', type: 'image', value: { text: '' } },
+            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'Update from Adama Ethiopia' } },
             { key: 'ticker', label: 'News Ticker', type: 'text', value: { text: 'A fire broke out in a group of huts in the Adama region. Local authorities have since controlled the situation, and all affected families are now in temporary shelters. Stay tuned for further updates' } },
             { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: '"This is Ethiopia 24 News bringing you an update from Adama. Yesterday, due to the factory explosion in Adama, a fire broke out in nearby huts, injuring three individuals, one of them died. Local authorities have since controlled the situation, and all affected families are now in temporary shelters. Stay tuned for further updates."' } },
             { key: 'label', label: 'Label', type: 'text', value: { text: 'Breaking News Summary' } },
@@ -57,7 +58,8 @@ const challengeCards = [
         elements: [
             { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Ethiopia 24' } },
             { key: 'time', label: 'Time', type: 'text', value: { text: '12:00' } },
-            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'BREAKING NEWS' } },
+            { key: 'news_image', label: 'News Photo', type: 'image', value: { text: '' } },
+            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'Emergency in Afar Region' } },
             { key: 'ticker', label: 'News Ticker', type: 'text', value: { text: 'Relief operations underway... Authorities urge caution for aftershocks... Immediate assistance needed' } },
             { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: 'An earthquake of magnitude 6.8 struck the Afar region yesterday, resulting in 1,800 deaths, 7,000 injuries, and the displacement of 50,000 individuals. Emergency response teams are on-site, and the situation remains critical.' } },
             { key: 'label', label: 'Label', type: 'text', value: { text: 'Breaking News Summary' } },
