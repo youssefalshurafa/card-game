@@ -5,6 +5,15 @@ import { useRef, useCallback } from 'react';
 export default function EditableImage({ value, fieldKey, onSave, className, placeholder }) {
  const inputRef = useRef(null);
 
+ function readFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+   const reader = new FileReader();
+   reader.onload = () => resolve(reader.result);
+   reader.onerror = () => reject(reader.error);
+   reader.readAsDataURL(file);
+  });
+ }
+
  const handleClick = useCallback(() => {
   if (inputRef.current) {
    inputRef.current.click();
@@ -16,6 +25,14 @@ export default function EditableImage({ value, fieldKey, onSave, className, plac
    const file = e.target.files?.[0];
    if (!file) return;
 
+   try {
+    const previewUrl = await readFileAsDataUrl(file);
+    onSave?.(fieldKey, previewUrl);
+   } catch {
+    e.target.value = '';
+    return;
+   }
+
    const formData = new FormData();
    formData.append('file', file);
 
@@ -25,14 +42,7 @@ export default function EditableImage({ value, fieldKey, onSave, className, plac
      const data = await res.json();
      onSave?.(fieldKey, data.url);
     }
-   } catch {
-    // Fallback: use data URL
-    const reader = new FileReader();
-    reader.onload = () => {
-     onSave?.(fieldKey, reader.result);
-    };
-    reader.readAsDataURL(file);
-   }
+   } catch {}
 
    // Reset input so same file can be re-selected
    e.target.value = '';
@@ -48,6 +58,12 @@ export default function EditableImage({ value, fieldKey, onSave, className, plac
    onClick={handleClick}
    role="button"
    tabIndex={0}
+   onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+     e.preventDefault();
+     handleClick();
+    }
+   }}
   >
    {hasImage ? (
     <img
