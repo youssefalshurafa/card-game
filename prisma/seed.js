@@ -30,7 +30,8 @@ const challengeCards = [
         sortOrder: 1,
         metadata: { cardType: 'facebook-live', challengeNumber: '2A', challengeLabel: 'Challenge 2', difficulty: 1 },
         elements: [
-            { key: 'viewer_count', label: 'Viewers', type: 'text', value: { text: '2383' } },
+            { key: 'live_image', label: 'Live Stream Photo', type: 'image', value: { text: '' } },
+            { key: 'viewer_count', label: 'Viewers', type: 'text', value: { text: '2382' } },
             { key: 'comments', label: 'Comments', type: 'json', value: { items: [{ name: 'Lauren Evans', text: '\u{1F64F}' }, { name: '\u12A5\u130D\u12DA\u12A0\u1265\u1214\u122D \u12ED\u122D\u12F3\u1295', text: '' }, { name: 'Alice_90', text: '\u1208\u1270\u1308\u12F1\u1275 \u1338\u120E\u1275! :)' }, { name: '\u1234\u1293\u12ED\u1275_121', text: '' }] } },
             { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: 'Facebook live feeds from influencers: A stampede occurred as attendees exited the music festival in Addis Ababa. Reports suggest 1 death and 30 mild injuries. Currently the stampede is over, and most people have evacuated safely.\n\nFire And Emergency Service\'s official Facebook account reported that the situation has since calmed, and most attendees have safely evacuated.' } },
             { key: 'url', label: 'URL', type: 'text', value: { text: 'https://www.facebook.com/live69/' } },
