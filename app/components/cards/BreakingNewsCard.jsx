@@ -126,15 +126,15 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
      </div>
     </div>
 
-    {/* ---- Summary section below TV ---- */}
-    <div className="mt-2 w-full px-2 pt-3">
-     <div className="border-t border-gray-300 pt-3">
+    {/* ---- Summary bubble below TV ---- */}
+    <div className="mt-2 w-full px-2 pb-2">
+     <div className="rounded-2xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
       <Field
        fields={fields}
        fieldKey="label"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="text-sm font-bold text-gray-900"
+       className="text-[10px] font-bold text-gray-900"
        tag="p"
       />
       <Field
@@ -142,7 +142,7 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
        fieldKey="summary"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="mt-1.5 text-xs leading-relaxed text-gray-700"
+       className="mt-1 text-[9px] leading-relaxed text-gray-700"
        tag="p"
       />
      </div>
