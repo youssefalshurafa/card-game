@@ -46,6 +46,7 @@ const challengeCards = [
             { key: 'author', label: 'Author', type: 'text', value: { text: '\u12A0\u1263\u12ED\u1290\u1205' } },
             { key: 'time_ago', label: 'Time', type: 'text', value: { text: '20 Minutes ago' } },
             { key: 'post_text', label: 'Post Text', type: 'rich-text', value: { text: 'The Baro River overflowed yesterday, devastating Gambella communities. Hundreds are dead, thousands injured, and tens of thousands displaced. Please share this widely to ensure authorities respond urgently.' } },
+            { key: 'post_image', label: 'Post Photo', type: 'image', value: { text: '' } },
             { key: 'reactions', label: 'Reactions', type: 'text', value: { text: 'You and 99 others' } },
             { key: 'comment_count', label: 'Comments', type: 'text', value: { text: '100 Comments' } },
             { key: 'url', label: 'URL', type: 'text', value: { text: 'https://www.facebook.com/post33/' } },
