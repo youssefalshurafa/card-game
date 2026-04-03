@@ -75,6 +75,7 @@ const challengeCards = [
         elements: [
             { key: 'agency', label: 'Agency', type: 'text', value: { text: 'National Agricultural Agency' } },
             { key: 'report_title', label: 'Report Title', type: 'text', value: { text: 'WEEKLY REPORT' } },
+            { key: 'map_image', label: 'Map Image', type: 'image', value: { text: '' } },
             { key: 'bullets', label: 'Bullet Points', type: 'json', value: { items: ['A large swarm of locusts was spotted in Sudan.', 'The swarm\'s size and migration path remain unclear.', 'Potential agricultural damage has not yet been assessed.', 'Local farmers are reportedly concerned about possible crop losses.'] } },
         ],
     },
