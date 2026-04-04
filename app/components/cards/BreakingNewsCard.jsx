@@ -1,18 +1,15 @@
 'use client';
 
-import { ChallengeHeader, Field } from './utils';
+import { ChallengePdfShell, challengeHandFont } from './challengeShell';
+import { Field } from './utils';
 import EditableImage from '../EditableImage';
 
 export default function BreakingNewsCard({ card, fields, editable, onFieldChange }) {
  return (
-  <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-linear-to-b from-gray-200 via-gray-100 to-gray-50">
-   {/* ---- Challenge header (teal banner with orange accents) ---- */}
-   <ChallengeHeader card={card} />
-
-   {/* ---- Card body ---- */}
-   <div className="flex flex-1 flex-col items-center px-3 pb-3 pt-2">
+  <ChallengePdfShell card={card}>
+   <div className="flex flex-1 flex-col items-center px-6 pb-5 pt-1">
     {/* TV Set — SVG frame with content inside screen */}
-    <div className="relative w-[94%]">
+    <div className="relative mt-2 w-[96%]">
      {/* TV frame image */}
      <img
       src="/tv-frame.svg"
@@ -127,14 +124,14 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
     </div>
 
     {/* ---- Summary bubble below TV ---- */}
-    <div className="mt-2 w-full px-2 pb-2">
-     <div className="rounded-2xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
+    <div className="mt-4 w-full px-2">
+     <div className="rounded-4xl bg-[#d2d4d8]/80 px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
       <Field
        fields={fields}
        fieldKey="label"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="text-[10px] font-bold text-gray-900"
+       className="text-[10px] font-extrabold text-[#43454b]"
        tag="p"
       />
       <Field
@@ -142,12 +139,12 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
        fieldKey="summary"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="mt-1 text-[9px] leading-relaxed text-gray-700"
+       className={`${challengeHandFont.className} mt-1.5 text-[7.8px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
        tag="p"
       />
      </div>
     </div>
    </div>
-  </div>
+  </ChallengePdfShell>
  );
 }

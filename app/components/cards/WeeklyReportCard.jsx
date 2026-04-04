@@ -1,74 +1,74 @@
 'use client';
 
-import { ChallengeHeader, Field, ImageField, getFieldJson } from './utils';
+import { ChallengePdfShell, challengeDisplayFont, challengeHandFont } from './challengeShell';
+import { Field, ImageField, getFieldJson } from './utils';
 
 export default function WeeklyReportCard({ card, fields, editable, onFieldChange }) {
  const bullets = getFieldJson(card, 'bullets')?.items ?? [];
 
  return (
-  <div className="flex h-full flex-col overflow-hidden rounded-2xl border-[3px] border-slate-300 bg-white shadow-md">
-   <ChallengeHeader card={card} />
+  <ChallengePdfShell card={card}>
+   <div className="flex flex-1 flex-col px-8 pb-7 pt-4">
+    <div className="flex h-full flex-col border-[3px] border-[#171717] bg-white px-8 pb-6 pt-8">
+     {/* Agency name + navy line + WEEKLY REPORT */}
+     <div className="flex items-start gap-4">
+      <div className="w-[36%] shrink-0">
+       <Field
+        fields={fields}
+        fieldKey="agency"
+        editable={editable}
+        onFieldChange={onFieldChange}
+        className={`${challengeDisplayFont.className} text-[18px] font-extrabold leading-[0.92] text-[#244c9d]`}
+        tag="p"
+       />
+      </div>
+      <div className="min-w-0 flex-1 pt-5">
+       <div className="mb-3 w-full border-t-[7px] border-[#244c9d]" />
+       <Field
+        fields={fields}
+        fieldKey="report_title"
+        editable={editable}
+        onFieldChange={onFieldChange}
+        className="text-[12px] font-extrabold tracking-[0.01em] text-[#4b2d18]"
+        tag="p"
+       />
+      </div>
+     </div>
 
-   {/* Document body */}
-   <div className="flex flex-1 flex-col px-4 py-3">
-    {/* Agency name + navy line + WEEKLY REPORT */}
-    <div className="flex items-start gap-2">
-     {/* Left: agency name + WEEKLY REPORT below */}
-     <div className="shrink-0">
-      <Field
+     {/* Map image */}
+     <div className="mx-auto mt-5 aspect-[1.18/1] w-[74%] overflow-hidden border border-gray-300 bg-gray-100">
+      <ImageField
        fields={fields}
-       fieldKey="agency"
+       fieldKey="map_image"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="text-[14px] font-extrabold leading-tight text-[#1a237e]"
-       tag="p"
-      />
-      <Field
-       fields={fields}
-       fieldKey="report_title"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-[9px] font-extrabold tracking-widest text-gray-900"
-       tag="p"
+       className="h-full w-full"
+       placeholder="Click to add map image"
       />
      </div>
-     {/* Navy line flush to the right, aligned near top */}
-     <div className="mt-[7px] flex-1 border-t-2 border-[#1a237e]" />
-    </div>
 
-    {/* Map image */}
-    <div className="mt-3 aspect-[4/3] w-full overflow-hidden rounded border border-gray-200 bg-gray-100">
-     <ImageField
-      fields={fields}
-      fieldKey="map_image"
-      editable={editable}
-      onFieldChange={onFieldChange}
-      className="h-full w-full"
-      placeholder="Click to add map image"
-     />
-    </div>
+     {/* Bullet points bubble */}
+     <div className="mx-6 mt-5 rounded-[30px] bg-[#efefef] px-5 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.25)]">
+      <ul className="space-y-1.5">
+       {bullets.map((bullet, i) => (
+        <li
+         key={i}
+         className={`${challengeHandFont.className} flex items-start gap-2 text-[7.8px] leading-[1.12] text-[#34363b]`}
+        >
+         <span className="mt-px shrink-0 text-gray-500">.</span>
+         <span>{bullet}</span>
+        </li>
+       ))}
+      </ul>
+     </div>
 
-    {/* Bullet points bubble */}
-    <div className="mt-3 rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5">
-     <ul className="space-y-1.5">
-      {bullets.map((bullet, i) => (
-       <li
-        key={i}
-        className="flex items-start gap-2 text-[8.5px] leading-snug text-slate-800"
-       >
-        <span className="mt-px shrink-0 text-gray-500">-</span>
-        <span>{bullet}</span>
-       </li>
-      ))}
-     </ul>
-    </div>
-
-    {/* Blue double underline footer */}
-    <div className="mt-auto pt-3 space-y-[3px]">
-     <div className="h-[2px] w-full bg-[#1a237e]" />
-     <div className="h-[2px] w-full bg-[#1a237e]" />
+     {/* Blue double underline footer */}
+     <div className="mt-auto px-3 pt-8 space-y-0.75">
+      <div className="h-0.75 w-full bg-[#244c9d]" />
+      <div className="h-0.75 w-full bg-[#244c9d]" />
+     </div>
     </div>
    </div>
-  </div>
+  </ChallengePdfShell>
  );
 }
