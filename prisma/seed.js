@@ -87,6 +87,7 @@ const challengeCards = [
         elements: [
             { key: 'issuer', label: 'Issuer', type: 'text', value: { text: 'Oromia Authorities' } },
             { key: 'title', label: 'Title', type: 'text', value: { text: 'PRESS RELEASE SUMMARY' } },
+            { key: 'map_image', label: 'Map Image', type: 'image', value: { text: '' } },
             { key: 'body', label: 'Body', type: 'rich-text', value: { text: 'The Oromia Regional Authority has officially Disproven reports of lava eruption at Mount Fentale over the past few days. In a statement issued on Monday, officials confirmed that no volcanic activity has been recorded, describing the circulating rumors as baseless and unverified.\n\nAuthorities have reassured the public that the situation remains stable and that monitoring systems are in place to detect any potential volcanic activity. Residents and media outlets are urged to rely only on official sources for accurate information.' } },
         ],
     },
