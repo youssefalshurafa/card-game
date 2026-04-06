@@ -1,14 +1,14 @@
 'use client';
 
-import BreakingNewsCard from './BreakingNewsCard';
-import FacebookLiveCard from './FacebookLiveCard';
-import SocialPostCard from './SocialPostCard';
-import WeeklyReportCard from './WeeklyReportCard';
-import PressReleaseCard from './PressReleaseCard';
-import HotlineCallCard from './HotlineCallCard';
-import EmailAlertCard from './EmailAlertCard';
-import ChatUpdateCard from './ChatUpdateCard';
-import BulletinCard from './BulletinCard';
+import BreakingNewsCard from './BreakingNewsCard1_4';
+import FacebookLiveCard from './FacebookLiveCard2';
+import SocialPostCard from './SocialPostCard3';
+import WeeklyReportCard from './WeeklyReportCard5';
+import PressReleaseCard from './PressReleaseCard6';
+import HotlineCallCard from './HotlineCallCard7';
+import EmailAlertCard from './EmailAlertCard8';
+import ChatUpdateCard from './ChatUpdateCard9';
+import BulletinCard from './BulletinCard10';
 
 const CARD_COMPONENTS = {
  'breaking-news': BreakingNewsCard,
