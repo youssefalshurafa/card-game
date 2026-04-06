@@ -13,7 +13,7 @@ export default function CardGallery({ cards }) {
      href={`/cards/${card.id}`}
      className="group block"
     >
-     <div className="aspect-[5/7] overflow-hidden rounded-2xl shadow-lg ring-1 ring-white/10 transition-all duration-200 group-hover:scale-[1.02] group-hover:ring-2 group-hover:ring-blue-400/50 group-hover:shadow-blue-500/20">
+     <div className="aspect-5/7 overflow-hidden  shadow-lg  transition-all duration-200 group-hover:scale-[1.02] group-hover:ring-2 group-hover:ring-blue-400/50 group-hover:shadow-blue-500/20">
       <CardRenderer
        card={card}
        fields={buildFieldsFromCard(card)}
