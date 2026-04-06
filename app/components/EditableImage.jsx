@@ -2,7 +2,7 @@
 
 import { useRef, useCallback } from 'react';
 
-export default function EditableImage({ value, fieldKey, onSave, className, placeholder }) {
+export default function EditableImage({ value, fieldKey, onSave, className, imageClassName, placeholder }) {
  const inputRef = useRef(null);
 
  function readFileAsDataUrl(file) {
@@ -69,7 +69,7 @@ export default function EditableImage({ value, fieldKey, onSave, className, plac
     <img
      src={value}
      alt=""
-     className="h-full w-full object-cover"
+     className={`h-full w-full object-cover ${imageClassName || ''}`}
     />
    ) : (
     <div className="flex h-full w-full items-center justify-center bg-slate-700/50 text-xs text-slate-400">{placeholder || 'Click to add image'}</div>

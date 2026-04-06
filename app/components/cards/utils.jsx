@@ -51,7 +51,7 @@ export function Field({ fields, fieldKey, editable, onFieldChange, className, ta
  return <Tag className={className}>{value}</Tag>;
 }
 
-export function ImageField({ fields, fieldKey, editable, onFieldChange, className, placeholder }) {
+export function ImageField({ fields, fieldKey, editable, onFieldChange, className, imageClassName, placeholder }) {
  const value = fields?.[fieldKey] ?? '';
 
  if (editable) {
@@ -61,6 +61,7 @@ export function ImageField({ fields, fieldKey, editable, onFieldChange, classNam
     fieldKey={fieldKey}
     onSave={onFieldChange}
     className={className}
+    imageClassName={imageClassName}
     placeholder={placeholder || 'Click to add image'}
    />
   );
@@ -72,7 +73,7 @@ export function ImageField({ fields, fieldKey, editable, onFieldChange, classNam
    <img
     src={value}
     alt=""
-    className={`${className || ''} object-cover`}
+    className={`${className || ''} object-cover ${imageClassName || ''}`}
    />
   );
  }
