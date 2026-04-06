@@ -19,10 +19,6 @@ export default function CardGallery({ cards }) {
        fields={buildFieldsFromCard(card)}
       />
      </div>
-     <div className="mt-2 flex items-center justify-between px-1">
-      <p className="text-sm font-medium text-slate-300">{card.name}</p>
-      <span className="text-xs text-slate-500">{card.metadata?.cardType}</span>
-     </div>
     </Link>
    ))}
   </div>
