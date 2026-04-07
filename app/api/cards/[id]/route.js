@@ -63,7 +63,25 @@ export async function PUT(request, { params }) {
     for (const element of face.elements) {
       if (Object.prototype.hasOwnProperty.call(fields, element.key)) {
         const currentValue = element.valueJson ? JSON.parse(element.valueJson) : {};
-        const updatedValue = { ...currentValue, text: fields[element.key] };
+        let updatedValue;
+
+        if (element.type === 'json') {
+          const nextValue = fields[element.key];
+          if (typeof nextValue === 'string') {
+            try {
+              updatedValue = JSON.parse(nextValue);
+            } catch {
+              updatedValue = currentValue;
+            }
+          } else if (nextValue && typeof nextValue === 'object') {
+            updatedValue = nextValue;
+          } else {
+            updatedValue = currentValue;
+          }
+        } else {
+          updatedValue = { ...currentValue, text: fields[element.key] };
+        }
+
         updates.push(
           prisma.cardElement.update({
             where: { id: element.id },

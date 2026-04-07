@@ -60,6 +60,12 @@ const THEMES = {
   headerColor: '#51564a',
   starCapsuleColor: '#30477a',
  },
+ '9A': {
+  frameColor: '#355c7b',
+  shellColor: '#d7d8dc',
+  headerColor: '#315f2a',
+  starCapsuleColor: '#436a33',
+ },
 };
 
 function HeaderStars({ level }) {
