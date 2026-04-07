@@ -1,108 +1,138 @@
 'use client';
 
-import { ChallengeHeader, Field } from './utils';
+import { ChallengePdfShell } from './challengeShell';
+import { Field } from './utils';
+
+function FooterIcon({ children }) {
+ return <span className="inline-flex h-3.5 w-3.5 items-center justify-center text-[8px] font-bold text-[#857a79]">{children}</span>;
+}
 
 export default function EmailAlertCard({ card, fields, editable, onFieldChange }) {
  return (
-  <div className="flex h-full flex-col overflow-hidden rounded-2xl bg-slate-950 text-white">
-   <ChallengeHeader card={card} />
+  <ChallengePdfShell card={card}>
+   <div className="flex h-full flex-col px-4 pb-7 pt-8">
+    <div className="mt-9 flex flex-1 items-start justify-center">
+     <div className="w-full rounded-2xl bg-[#f3ecdf] p-0.75 shadow-[0_10px_18px_rgba(0,0,0,0.14)]">
+      <div className="overflow-hidden rounded-[14px] bg-[#f7f2e9]">
+       <div className="flex items-center justify-between bg-[#0a6772] px-5 py-2.5 text-white">
+        <span className="text-[11px] font-extrabold leading-none tracking-[0.01em] text-[#e9f2ef]">Inbox</span>
+        <div className="flex items-center gap-2 text-[10px] font-bold text-[#d0e5e1]">
+         <span>−</span>
+         <span>□</span>
+         <span>×</span>
+        </div>
+       </div>
 
-   {/* Email client frame */}
-   <div className="mx-3 mt-2 flex flex-1 flex-col overflow-hidden rounded-xl border border-slate-700 bg-white text-slate-900">
-    {/* Email toolbar */}
-    <div className="flex items-center gap-2 border-b border-gray-200 bg-gray-100 px-3 py-1.5">
-     <div className="flex gap-1">
-      <div className="h-2 w-2 rounded-full bg-red-400" />
-      <div className="h-2 w-2 rounded-full bg-yellow-400" />
-      <div className="h-2 w-2 rounded-full bg-green-400" />
-     </div>
-     <span className="text-[9px] font-semibold text-gray-500">Inbox</span>
-    </div>
+       <div className="px-5 pb-4 pt-3">
+        <div className="space-y-1.5">
+         <div className="rounded-full bg-[#e6ded0] px-4 py-1">
+          <div className="flex items-start gap-1.5 text-[8px] leading-none text-[#746e68]">
+           <span className="shrink-0 font-extrabold">Subject:</span>
+           <Field
+            fields={fields}
+            fieldKey="subject"
+            editable={editable}
+            onFieldChange={onFieldChange}
+            className="min-w-0 flex-1 text-[8px] font-bold text-[#66615b]"
+           />
+          </div>
+         </div>
 
-    {/* Subject and from */}
-    <div className="border-b border-gray-200 px-3 py-2">
-     <div className="flex items-start gap-1">
-      <span className="shrink-0 text-[9px] font-semibold text-gray-500">Subject:</span>
-      <Field
-       fields={fields}
-       fieldKey="subject"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-xs font-bold text-slate-900"
-      />
-     </div>
-     <div className="mt-1 flex items-center gap-1">
-      <span className="shrink-0 text-[9px] font-semibold text-gray-500">From:</span>
-      <Field
-       fields={fields}
-       fieldKey="from_name"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-[10px] font-semibold text-slate-800"
-      />
-     </div>
-     <div className="ml-8">
-      <Field
-       fields={fields}
-       fieldKey="from_email"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-[9px] text-blue-600"
-      />
-     </div>
-    </div>
+         <div className="w-[48%] rounded-full bg-[#e6ded0] px-4 py-1.5">
+          <div className="flex items-start gap-1.5 text-[8px] leading-none text-[#746e68]">
+           <span className="shrink-0 font-extrabold">From:</span>
+           <div className="min-w-0 flex-1">
+            <Field
+             fields={fields}
+             fieldKey="from_name"
+             editable={editable}
+             onFieldChange={onFieldChange}
+             className="block text-[8px] font-bold text-[#66615b]"
+             tag="p"
+            />
+            <Field
+             fields={fields}
+             fieldKey="from_email"
+             editable={editable}
+             onFieldChange={onFieldChange}
+             className="mt-0.75 block text-[6px] font-semibold text-[#7b756f]"
+             tag="p"
+            />
+           </div>
+          </div>
+         </div>
+        </div>
 
-    {/* Email body */}
-    <div className="flex-1 px-3 py-3">
-     <Field
-      fields={fields}
-      fieldKey="body"
-      editable={editable}
-      onFieldChange={onFieldChange}
-      className="whitespace-pre-line text-[10px] leading-relaxed text-slate-700"
-      tag="p"
-     />
-    </div>
+        <div className="mt-3 rounded-t-sm rounded-b-[18px] bg-[#dfd6c8] px-4 pb-5 pt-3 text-[#5f5a55] shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
+         <Field
+          fields={fields}
+          fieldKey="body"
+          editable={editable}
+          onFieldChange={onFieldChange}
+          className="whitespace-pre-line text-[6.5px] font-semibold leading-[1.65] tracking-[-0.01em] text-[#5c5954]"
+          tag="p"
+         />
 
-    {/* Signature */}
-    <div className="border-t border-gray-200 bg-gray-50 px-3 py-2">
-     <p className="text-[9px] text-gray-400">—</p>
-     <Field
-      fields={fields}
-      fieldKey="signature_name"
-      editable={editable}
-      onFieldChange={onFieldChange}
-      className="text-[9px] font-semibold text-gray-700"
-      tag="p"
-     />
-     <Field
-      fields={fields}
-      fieldKey="signature_title"
-      editable={editable}
-      onFieldChange={onFieldChange}
-      className="text-[9px] text-gray-500"
-      tag="p"
-     />
-     <div className="mt-0.5 flex gap-2 text-[8px] text-gray-400">
-      <Field
-       fields={fields}
-       fieldKey="signature_email"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-blue-500"
-      />
-      <Field
-       fields={fields}
-       fieldKey="signature_phone"
-       editable={editable}
-       onFieldChange={onFieldChange}
-       className="text-gray-400"
-      />
+         <div className="mt-5 text-[6.5px] font-semibold leading-[1.35] text-[#5d5954]">
+          <p>Regards,</p>
+          <Field
+           fields={fields}
+           fieldKey="signature_name"
+           editable={editable}
+           onFieldChange={onFieldChange}
+           className="block"
+           tag="p"
+          />
+          <Field
+           fields={fields}
+           fieldKey="signature_title"
+           editable={editable}
+           onFieldChange={onFieldChange}
+           className="block"
+           tag="p"
+          />
+          <Field
+           fields={fields}
+           fieldKey="signature_email"
+           editable={editable}
+           onFieldChange={onFieldChange}
+           className="block"
+           tag="p"
+          />
+          <div className="flex gap-1">
+           <span>Phone:</span>
+           <Field
+            fields={fields}
+            fieldKey="signature_phone"
+            editable={editable}
+            onFieldChange={onFieldChange}
+            className="block"
+            tag="span"
+           />
+          </div>
+         </div>
+        </div>
+       </div>
+
+       <div className="flex items-center justify-between px-5 pb-4 pt-1 text-[#857a79]">
+        <div className="flex items-center gap-2">
+         <FooterIcon>A</FooterIcon>
+         <FooterIcon>i</FooterIcon>
+         <FooterIcon>◎</FooterIcon>
+         <FooterIcon>◩</FooterIcon>
+         <FooterIcon>≡</FooterIcon>
+        </div>
+
+        <div className="flex items-center gap-2">
+         <div className="h-4 w-10 rounded-full bg-[#7b6a67]" />
+         <div className="h-4 w-10 rounded-full bg-[#f1e6d6]" />
+         <div className="h-4 w-10 rounded-full bg-[#f1e6d6]" />
+        </div>
+       </div>
+      </div>
      </div>
     </div>
    </div>
-
-   <div className="h-2" />
-  </div>
+  </ChallengePdfShell>
  );
 }
