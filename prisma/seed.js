@@ -2,6 +2,8 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
+const PROJECT_SLUG = 'signal-management-card-game';
+
 function s(v) {
     return v == null ? null : JSON.stringify(v);
 }
@@ -15,12 +17,12 @@ const challengeCards = [
         sortOrder: 0,
         metadata: { cardType: 'breaking-news', challengeNumber: '1A', challengeLabel: 'Challenge 1', difficulty: 1 },
         elements: [
-            { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Ethiopia 24' } },
+            { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Global 24' } },
             { key: 'time', label: 'Time', type: 'text', value: { text: '16:00' } },
             { key: 'news_image', label: 'News Photo', type: 'image', value: { text: '' } },
-            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'Update from Adama Ethiopia' } },
+            { key: 'headline', label: 'Headline', type: 'text', value: { text: 'Update from Adama Region' } },
             { key: 'ticker', label: 'News Ticker', type: 'text', value: { text: 'A fire broke out in a group of huts in the Adama region. Local authorities have since controlled the situation, and all affected families are now in temporary shelters. Stay tuned for further updates' } },
-            { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: '"This is Ethiopia 24 News bringing you an update from Adama. Yesterday, due to the factory explosion in Adama, a fire broke out in nearby huts, injuring three individuals, one of them died. Local authorities have since controlled the situation, and all affected families are now in temporary shelters. Stay tuned for further updates."' } },
+            { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: '"This is Global 24 News bringing you an update from Adama. Yesterday, due to the factory explosion in Adama, a fire broke out in nearby huts, injuring three individuals, one of them died. Local authorities have since controlled the situation, and all affected families are now in temporary shelters. Stay tuned for further updates."' } },
             { key: 'label', label: 'Label', type: 'text', value: { text: 'Breaking News Summary' } },
         ],
     },
@@ -58,7 +60,7 @@ const challengeCards = [
         sortOrder: 3,
         metadata: { cardType: 'breaking-news', challengeNumber: '4A', challengeLabel: 'Challenge 4', difficulty: 2 },
         elements: [
-            { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Ethiopia 24' } },
+            { key: 'channel', label: 'Channel', type: 'text', value: { text: 'Global 24' } },
             { key: 'time', label: 'Time', type: 'text', value: { text: '12:00' } },
             { key: 'news_image', label: 'News Photo', type: 'image', value: { text: '' } },
             { key: 'headline', label: 'Headline', type: 'text', value: { text: 'Emergency in Afar Region' } },
@@ -154,19 +156,42 @@ const challengeCards = [
 /* ---------- Main ---------- */
 
 async function main() {
-    const project = await prisma.gameProject.upsert({
-        where: { slug: 'ethiopia-card-game' },
-        update: {
-            name: 'Ethiopia Signal Management Card Game',
-            description: 'A card-based training game for public health emergency signal management in Ethiopia.',
-        },
-        create: {
-            name: 'Ethiopia Signal Management Card Game',
-            slug: 'ethiopia-card-game',
-            description: 'A card-based training game for public health emergency signal management in Ethiopia.',
-            settingsJson: s({ defaultCardSize: { width: 750, height: 1050 }, editingMode: 'in-place' }),
-        },
+    const existingProject = await prisma.gameProject.findUnique({
+        where: { slug: PROJECT_SLUG },
+        select: { id: true },
     });
+
+    const fallbackProject = existingProject
+        ? null
+        : await prisma.gameProject.findFirst({
+            orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
+            select: { id: true, slug: true },
+        });
+
+    const project = fallbackProject
+        ? await prisma.gameProject.update({
+            where: { id: fallbackProject.id },
+            data: {
+                name: 'Signal Management Card Game',
+                slug: PROJECT_SLUG,
+                description: 'A card-based training game for public health emergency signal management.',
+                settingsJson: s({ defaultCardSize: { width: 750, height: 1050 }, editingMode: 'in-place' }),
+            },
+        })
+        : await prisma.gameProject.upsert({
+            where: { slug: PROJECT_SLUG },
+            update: {
+                name: 'Signal Management Card Game',
+                description: 'A card-based training game for public health emergency signal management.',
+                settingsJson: s({ defaultCardSize: { width: 750, height: 1050 }, editingMode: 'in-place' }),
+            },
+            create: {
+                name: 'Signal Management Card Game',
+                slug: PROJECT_SLUG,
+                description: 'A card-based training game for public health emergency signal management.',
+                settingsJson: s({ defaultCardSize: { width: 750, height: 1050 }, editingMode: 'in-place' }),
+            },
+        });
 
     const deck = await prisma.deck.upsert({
         where: { projectId_slug: { projectId: project.id, slug: 'signal-challenges' } },
@@ -221,7 +246,7 @@ async function main() {
                     create: {
                         version: 1,
                         snapshotJson: s({ source: 'pdf-seed', challengeNumber: def.metadata.challengeNumber }),
-                        changeNote: 'Seeded from Ethiopia Card Game Design PDF',
+                        changeNote: 'Seeded from the signal management card design PDF',
                     },
                 },
             },

@@ -4,7 +4,26 @@ import { ChallengePdfShell, challengeHandFont } from './challengeShell';
 import { Field } from './utils';
 import EditableImage from '../EditableImage';
 
+function getChannelParts(value) {
+ const channel = typeof value === 'string' ? value.trim() : '';
+ const match = channel.match(/^(.*?)(\d+)$/);
+
+ if (match) {
+  return {
+   name: match[1].trim() || 'Global',
+   number: match[2],
+  };
+ }
+
+ return {
+  name: channel || 'Global',
+  number: '24',
+ };
+}
+
 export default function BreakingNewsCard({ card, fields, editable, onFieldChange }) {
+ const channel = getChannelParts(fields.channel);
+
  return (
   <ChallengePdfShell card={card}>
    <div className="flex flex-1 flex-col items-center px-6 pb-5 pt-1">
@@ -114,8 +133,8 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
          </div>
 
          <div className="flex w-9 shrink-0 flex-col overflow-hidden bg-[#d11111]">
-          <div className="flex flex-1 items-center justify-center border-b border-white/25 text-[8px] font-black leading-none text-white">24</div>
-          <div className="flex items-center justify-center bg-white px-1 py-px text-[4px] font-black leading-none text-[#d11111]">Ethiopia</div>
+          <div className="flex flex-1 items-center justify-center border-b border-white/25 text-[8px] font-black leading-none text-white">{channel.number}</div>
+          <div className="flex items-center justify-center bg-white px-1 py-px text-[4px] font-black leading-none text-[#d11111]">{channel.name}</div>
          </div>
         </div>
        </div>
