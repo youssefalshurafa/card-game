@@ -12,7 +12,7 @@ export default function FacebookLiveCard({ card, fields, editable, onFieldChange
   <ChallengePdfShell card={card}>
    <div className="flex flex-1 flex-col items-center justify-between px-5 pb-5 pt-2">
     {/* ── Phone frame ── */}
-    <div className="relative mt-2 w-[54%] rounded-3xl bg-white p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.42)]">
+    <div className="relative mt-2 w-[47%] rounded-3xl bg-white p-1.5 shadow-[0_12px_36px_rgba(0,0,0,0.42)]">
      {/* Top bezel — camera dot + speaker bar */}
      <div className="flex items-center justify-center gap-1 py-1.25">
       <div className="h-1.25 w-1.25 rounded-full bg-gray-400" />
@@ -205,13 +205,13 @@ export default function FacebookLiveCard({ card, fields, editable, onFieldChange
 
     {/* Description — below phone, inside card */}
     <div className="mt-4 w-full rounded-4xl bg-[#d2d4d8]/80 px-6 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]">
-     <p className="text-[11px] font-extrabold text-[#43454b]">Facebook live Feeds</p>
+     <p className="text-[12px] font-extrabold text-[#43454b]">Facebook live Feeds</p>
      <Field
       fields={fields}
       fieldKey="summary"
       editable={editable}
       onFieldChange={onFieldChange}
-      className={`${challengeHandFont.className} mt-1 text-[9px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
+      className={`${challengeHandFont.className} mt-1 text-[12px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
       tag="p"
      />
     </div>
