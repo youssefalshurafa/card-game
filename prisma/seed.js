@@ -208,21 +208,6 @@ async function main() {
         },
     });
 
-    await prisma.deck.upsert({
-        where: { projectId_slug: { projectId: project.id, slug: 'my-saved-sets' } },
-        update: {
-            name: 'My Saved Sets',
-            description: 'Your saved custom cards and sets appear here.',
-        },
-        create: {
-            projectId: project.id,
-            name: 'My Saved Sets',
-            slug: 'my-saved-sets',
-            description: 'Your saved custom cards and sets appear here.',
-            themeJson: s({ frameColor: '#1f6f78', textColor: '#111827', accentColor: '#f59e0b' }),
-        },
-    });
-
     for (const def of challengeCards) {
         const existing = await prisma.card.findFirst({
             where: { deckId: deck.id, slug: def.slug },

@@ -1,10 +1,11 @@
 import Link from 'next/link';
-import { getCard } from '../../../lib/card-game-data';
+import { getCard, getProjectOverview, getSavedSetDecks } from '../../../lib/card-game-data';
 import CardEditor from '../../components/CardEditor';
 
 export default async function CardEditorPage({ params }) {
  const { id } = await params;
  const card = await getCard(id);
+ const project = await getProjectOverview();
 
  if (!card) {
   return (
@@ -22,5 +23,14 @@ export default async function CardEditorPage({ params }) {
   );
  }
 
- return <CardEditor card={card} />;
+ return (
+  <CardEditor
+   card={card}
+   savedSets={getSavedSetDecks(project).map((deck) => ({
+    id: deck.id,
+    name: deck.name,
+    slug: deck.slug,
+   }))}
+  />
+ );
 }

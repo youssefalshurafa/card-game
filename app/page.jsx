@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getProjectOverview } from '../lib/card-game-data';
+import { getDefaultSetDeck, getProjectOverview, getSavedSetDecks } from '../lib/card-game-data';
 import HomeDeckTabs from './components/HomeDeckTabs';
 
 export const metadata = {
@@ -24,6 +24,8 @@ export default async function Home() {
  }
 
  const totalCards = project.decks.reduce((count, deck) => count + (deck.cards?.length ?? 0), 0);
+ const defaultDeck = getDefaultSetDeck(project);
+ const savedSets = getSavedSetDecks(project);
 
  return (
   <main className="min-h-screen bg-slate-900">
@@ -40,7 +42,11 @@ export default async function Home() {
     </div>
    </header>
 
-   <HomeDeckTabs decks={project.decks} />
+   <HomeDeckTabs
+    projectSlug={project.slug}
+    defaultDeck={defaultDeck}
+    savedSets={savedSets}
+   />
   </main>
  );
 }
