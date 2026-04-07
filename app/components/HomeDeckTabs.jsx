@@ -20,6 +20,10 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
  const [renameValue, setRenameValue] = useState('');
  const [isRenaming, setIsRenaming] = useState(false);
  const [isDeletingId, setIsDeletingId] = useState(null);
+ const [showNewCard, setShowNewCard] = useState(false);
+ const [newCardName, setNewCardName] = useState('');
+ const [newCardType, setNewCardType] = useState('breaking-news');
+ const [isCreatingCard, setIsCreatingCard] = useState(false);
 
  const orderedSavedSets = useMemo(() => sortSavedSets(localSavedSets), [localSavedSets]);
  const activeSavedSet = orderedSavedSets.find((deck) => deck.slug === activeSavedSetSlug) ?? orderedSavedSets[0] ?? null;
@@ -114,6 +118,33 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
    setCreateError(error instanceof Error ? error.message : 'Unable to delete saved set.');
   } finally {
    setIsDeletingId(null);
+  }
+ }
+
+ async function handleCreateCard(event) {
+  event.preventDefault();
+  if (!activeSavedSet) return;
+  setCreateError('');
+  setIsCreatingCard(true);
+
+  try {
+   const res = await fetch(`/api/decks/${activeSavedSet.slug}/new-card`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ cardType: newCardType, name: newCardName }),
+   });
+
+   const data = await res.json().catch(() => null);
+
+   if (!res.ok) {
+    throw new Error(data?.error || 'Unable to create card.');
+   }
+
+   router.push(`/cards/${data.id}`);
+  } catch (error) {
+   setCreateError(error instanceof Error ? error.message : 'Unable to create card.');
+  } finally {
+   setIsCreatingCard(false);
   }
  }
 
@@ -282,14 +313,68 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
         </div>
 
         {activeSavedSet ? (
-         <div className="mb-6 flex items-end justify-between gap-4">
-          <div>
-           <h3 className="text-lg font-semibold text-white">{activeSavedSet.name}</h3>
-           <p className="mt-1 text-sm text-slate-400">{activeSavedSet.description}</p>
+         <div className="mb-6">
+          <div className="flex items-end justify-between gap-4">
+           <div>
+            <h3 className="text-lg font-semibold text-white">{activeSavedSet.name}</h3>
+            <p className="mt-1 text-sm text-slate-400">{activeSavedSet.description}</p>
+           </div>
+           <div className="flex items-center gap-3">
+            <button
+             type="button"
+             onClick={() => setShowNewCard((v) => !v)}
+             className="rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-teal-500"
+            >
+             {showNewCard ? 'Cancel' : '+ Create New Card'}
+            </button>
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
+             {activeSavedSet.cards.length} {activeSavedSet.cards.length === 1 ? 'card' : 'cards'}
+            </span>
+           </div>
           </div>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-400">
-           {activeSavedSet.cards.length} {activeSavedSet.cards.length === 1 ? 'card' : 'cards'}
-          </span>
+
+          {showNewCard ? (
+           <form
+            onSubmit={handleCreateCard}
+            className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-white/10 bg-slate-950/60 p-4"
+           >
+            <div className="flex flex-col gap-1">
+             <label className="text-xs text-slate-400">Card Type</label>
+             <select
+              value={newCardType}
+              onChange={(e) => setNewCardType(e.target.value)}
+              className="rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-sm text-white outline-none focus:border-teal-400"
+             >
+              <option value="breaking-news">Breaking News</option>
+              <option value="facebook-live">Facebook Live</option>
+              <option value="social-post">Social Post</option>
+              <option value="weekly-report">Weekly Report</option>
+              <option value="press-release">Press Release</option>
+              <option value="hotline-call">Hotline Call</option>
+              <option value="email-alert">Email Alert</option>
+              <option value="chat-update">Chat Update</option>
+              <option value="bulletin">Bulletin</option>
+             </select>
+            </div>
+            <div className="flex flex-1 flex-col gap-1">
+             <label className="text-xs text-slate-400">Card Name</label>
+             <input
+              type="text"
+              value={newCardName}
+              onChange={(e) => setNewCardName(e.target.value)}
+              placeholder="e.g. My Custom Challenge"
+              className="rounded-lg border border-white/10 bg-slate-900 px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500 focus:border-teal-400"
+             />
+            </div>
+            <button
+             type="submit"
+             disabled={isCreatingCard || newCardName.trim() === ''}
+             className="rounded-lg bg-emerald-600 px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-500 disabled:opacity-40"
+            >
+             {isCreatingCard ? 'Creating...' : 'Create Card'}
+            </button>
+           </form>
+          ) : null}
          </div>
         ) : null}
 

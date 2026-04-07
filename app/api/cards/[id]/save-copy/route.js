@@ -6,7 +6,7 @@ export async function POST(request, { params }) {
         const { id } = await params;
         const body = await request.json().catch(() => ({}));
         const targetDeckSlug = typeof body?.targetDeckSlug === 'string' ? body.targetDeckSlug : '';
-        const card = await duplicateCardToDeck(id, targetDeckSlug, body?.fields ?? {});
+        const card = await duplicateCardToDeck(id, targetDeckSlug, body?.fields ?? {}, body?.metadata ?? {});
 
         return NextResponse.json(card, { status: 201 });
     } catch (error) {

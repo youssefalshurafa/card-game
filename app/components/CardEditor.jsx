@@ -9,6 +9,7 @@ import { buildFieldsFromCard } from './cards/utils';
 export default function CardEditor({ card, savedSets = [] }) {
  const router = useRouter();
  const [fields, setFields] = useState(() => buildFieldsFromCard(card));
+ const [difficulty, setDifficulty] = useState(card.metadata?.difficulty ?? 1);
  const [savingCopy, setSavingCopy] = useState(false);
  const [copyError, setCopyError] = useState('');
  const [targetSetSlug, setTargetSetSlug] = useState(() => savedSets.find((set) => set.id === card.deckId)?.slug ?? savedSets[0]?.slug ?? '');
@@ -32,6 +33,7 @@ export default function CardEditor({ card, savedSets = [] }) {
     body: JSON.stringify({
      targetDeckSlug: targetSetSlug,
      fields,
+     metadata: { difficulty },
     }),
    });
 
@@ -52,6 +54,7 @@ export default function CardEditor({ card, savedSets = [] }) {
 
  const editableCard = {
   ...card,
+  metadata: { ...card.metadata, difficulty },
   faces: card.faces.map((face) => ({
    ...face,
    elements: face.elements.map((el) => ({
@@ -74,6 +77,19 @@ export default function CardEditor({ card, savedSets = [] }) {
     <div className="text-center">
      <p className="text-sm font-semibold text-white">{card.name}</p>
      <p className="text-[10px] text-slate-500">{card.metadata?.cardType} — Click any text to edit</p>
+     <div className="mt-1 flex items-center justify-center gap-1">
+      <span className="text-[10px] text-slate-500">Difficulty:</span>
+      {[1, 2, 3, 4].map((n) => (
+       <button
+        key={n}
+        type="button"
+        onClick={() => setDifficulty(n)}
+        className={`text-sm transition-opacity ${n <= difficulty ? 'opacity-100' : 'opacity-20'} hover:opacity-80`}
+       >
+        ⭐
+       </button>
+      ))}
+     </div>
      {copyError ? <p className="mt-1 text-[10px] text-rose-400">{copyError}</p> : null}
     </div>
     <div className="flex items-center gap-3">
