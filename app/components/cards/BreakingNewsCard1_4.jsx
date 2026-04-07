@@ -131,7 +131,7 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
        fieldKey="label"
        editable={editable}
        onFieldChange={onFieldChange}
-       className="text-[10px] font-extrabold text-[#43454b]"
+       className="text-[16px] font-extrabold text-[#43454b]"
        tag="p"
       />
       <Field
@@ -139,7 +139,7 @@ export default function BreakingNewsCard({ card, fields, editable, onFieldChange
        fieldKey="summary"
        editable={editable}
        onFieldChange={onFieldChange}
-       className={`${challengeHandFont.className} mt-1.5 text-[7.8px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
+       className={`${challengeHandFont.className} mt-1.5 text-[14px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
        tag="p"
       />
      </div>

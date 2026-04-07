@@ -211,7 +211,7 @@ export default function FacebookLiveCard({ card, fields, editable, onFieldChange
       fieldKey="summary"
       editable={editable}
       onFieldChange={onFieldChange}
-      className={`${challengeHandFont.className} mt-1 text-[7.8px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
+      className={`${challengeHandFont.className} mt-1 text-[9px] leading-[1.08] text-[#44464c] whitespace-pre-line`}
       tag="p"
      />
     </div>

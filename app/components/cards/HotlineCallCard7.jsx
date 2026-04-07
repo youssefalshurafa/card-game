@@ -216,7 +216,7 @@ export default function HotlineCallCard({ card, fields, editable, onFieldChange 
        fieldKey="transcript"
        editable={editable}
        onFieldChange={onFieldChange}
-       className={`${challengeHandFont.className} text-[7.9px] leading-[1.2] text-[#4d5b74] whitespace-pre-line`}
+       className={`${challengeHandFont.className} text-[16px] leading-[1.2] text-[#4d5b74] whitespace-pre-line`}
        tag="p"
       />
      </div>
