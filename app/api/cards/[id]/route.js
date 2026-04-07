@@ -4,6 +4,9 @@ const EXTRA_EDITABLE_FIELDS = {
   'hotline-call': {
     avatar_image: { label: 'Avatar Image', type: 'image' },
   },
+  bulletin: {
+    map_image: { label: 'Map Image', type: 'image' },
+  },
 };
 
 export async function GET(request, { params }) {

@@ -143,6 +143,7 @@ const challengeCards = [
         elements: [
             { key: 'authority', label: 'Authority', type: 'text', value: { text: 'Gambella Public Health Authorities' } },
             { key: 'bulletin_title', label: 'Bulletin Title', type: 'text', value: { text: 'IDSR MONTHLY BULLETIN' } },
+            { key: 'map_image', label: 'Map Image', type: 'image', value: { text: '' } },
             { key: 'summary', label: 'Summary', type: 'rich-text', value: { text: 'The IDSR monthly bulletin for this Month indicates a notable 30% increase in the malaria attack rate in Gambella compared to last month. This increase has resulted in a reported total of 1,500 suspected malaria cases.' } },
             { key: 'key_data', label: 'Key Data', type: 'json', value: { items: [{ label: 'Suspected Cases', value: '1,500' }, { label: 'Attack Rate Increase', value: '30% compared to the previous month' }] } },
             { key: 'footer', label: 'Footer', type: 'text', value: { text: 'End of Bulletin.' } },
