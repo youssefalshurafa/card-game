@@ -61,7 +61,7 @@ function MessageBubble({ msg, editable, onSave }) {
 
 function PhonePlaceholderBubbles() {
  return (
-  <div className="space-y-2 px-2 pt-2">
+  <div className="flex flex-1 flex-col gap-2 px-2 pt-2">
    <div className="ml-3 h-8 rounded-md bg-[#74d198]" />
    <div className="mr-3 h-8 rounded-md bg-[#dfe3e9]" />
    <div className="ml-3 h-8 rounded-md bg-[#74d198]" />
@@ -84,8 +84,8 @@ export default function ChatUpdateCard({ card, fields, editable, onFieldChange }
   <ChallengePdfShell card={card}>
    <div className="flex h-full flex-col px-4 pb-6 pt-8">
     <div className="mt-9 flex flex-1 items-start gap-5 px-1">
-     <div className="relative mt-16 w-[44%] shrink-0 rounded-3xl bg-[#232743] p-0.75 shadow-[0_8px_18px_rgba(15,23,42,0.3)]">
-      <div className="overflow-hidden rounded-[21px] bg-[#c9f0c9]">
+     <div className="relative mt-10 h-90 w-[44%] shrink-0 rounded-3xl bg-[#232743] p-0.75 shadow-[0_8px_18px_rgba(15,23,42,0.3)]">
+      <div className="flex h-full flex-col overflow-hidden rounded-[21px] bg-[#c9f0c9]">
        <div className="relative flex items-center justify-between bg-[#68b482] px-3 pb-2 pt-3 text-white">
         <div className="absolute left-1/2 top-0 h-2 w-14 -translate-x-1/2 rounded-b-lg bg-[#1d203a]" />
         <div className="text-[12px] leading-none">‹</div>
@@ -112,7 +112,7 @@ export default function ChatUpdateCard({ card, fields, editable, onFieldChange }
 
        <PhonePlaceholderBubbles />
 
-       <div className="mt-2 flex items-center gap-2 bg-[#b2efbc] px-2 py-1.5">
+       <div className="mt-auto flex items-center gap-2 bg-[#b2efbc] px-2 py-1.5">
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#84d3a0] text-[14px] font-bold leading-none text-[#f0fff0]">+</div>
         <div className="flex-1 rounded-full bg-[#d8f7d4] px-3 py-1 text-[6px] text-[#8fb497]" />
         <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#84d3a0] text-[9px] text-[#f0fff0]">➤</div>
