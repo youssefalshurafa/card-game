@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getProjectOverview } from '../lib/card-game-data';
-import CardGallery from './components/CardGallery';
+import HomeDeckTabs from './components/HomeDeckTabs';
 
 export const metadata = {
  title: 'Signal Management Card Game',
@@ -23,8 +23,7 @@ export default async function Home() {
   );
  }
 
- const deck = project.decks[0];
- const cards = deck?.cards ?? [];
+ const totalCards = project.decks.reduce((count, deck) => count + (deck.cards?.length ?? 0), 0);
 
  return (
   <main className="min-h-screen bg-slate-900">
@@ -35,16 +34,13 @@ export default async function Home() {
      <h1 className="mt-2 text-3xl font-bold text-white">{project.name}</h1>
      <p className="mt-1 max-w-2xl text-sm text-slate-400">{project.description}</p>
      <div className="mt-4 flex gap-3 text-xs text-slate-500">
-      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">{cards.length} Challenge Cards</span>
-      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">Click a card to edit</span>
+      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">{totalCards} Total Cards</span>
+      <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1">Switch tabs to browse sets</span>
      </div>
     </div>
    </header>
 
-   {/* Card gallery */}
-   <div className="mx-auto max-w-7xl px-6 py-8">
-    <CardGallery cards={cards} />
-   </div>
+   <HomeDeckTabs decks={project.decks} />
   </main>
  );
 }

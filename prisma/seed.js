@@ -196,14 +196,29 @@ async function main() {
     const deck = await prisma.deck.upsert({
         where: { projectId_slug: { projectId: project.id, slug: 'signal-challenges' } },
         update: {
-            name: 'Signal Challenges',
-            description: 'Challenge cards for the signal management drill — 10 scenarios from the PDF design.',
+            name: 'Default Set',
+            description: 'The default challenge card set with the 10 seeded scenarios.',
         },
         create: {
             projectId: project.id,
-            name: 'Signal Challenges',
+            name: 'Default Set',
             slug: 'signal-challenges',
-            description: 'Challenge cards for the signal management drill — 10 scenarios from the PDF design.',
+            description: 'The default challenge card set with the 10 seeded scenarios.',
+            themeJson: s({ frameColor: '#1f6f78', textColor: '#111827', accentColor: '#f59e0b' }),
+        },
+    });
+
+    await prisma.deck.upsert({
+        where: { projectId_slug: { projectId: project.id, slug: 'my-saved-sets' } },
+        update: {
+            name: 'My Saved Sets',
+            description: 'Your saved custom cards and sets appear here.',
+        },
+        create: {
+            projectId: project.id,
+            name: 'My Saved Sets',
+            slug: 'my-saved-sets',
+            description: 'Your saved custom cards and sets appear here.',
             themeJson: s({ frameColor: '#1f6f78', textColor: '#111827', accentColor: '#f59e0b' }),
         },
     });
