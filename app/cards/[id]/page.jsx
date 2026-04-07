@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getCard, getProjectOverview, getSavedSetDecks } from '../../../lib/card-game-data';
+import { getCard, getDefaultSetDeck, getProjectOverview, getSavedSetDecks } from '../../../lib/card-game-data';
 import CardEditor from '../../components/CardEditor';
 
 export default async function CardEditorPage({ params }) {
@@ -23,14 +23,17 @@ export default async function CardEditorPage({ params }) {
   );
  }
 
+ const defaultDeck = getDefaultSetDeck(project);
+ const targetDecks = [defaultDeck, ...getSavedSetDecks(project)].filter(Boolean).map((deck) => ({
+  id: deck.id,
+  name: deck.name,
+  slug: deck.slug,
+ }));
+
  return (
   <CardEditor
    card={card}
-   savedSets={getSavedSetDecks(project).map((deck) => ({
-    id: deck.id,
-    name: deck.name,
-    slug: deck.slug,
-   }))}
+   savedSets={targetDecks}
   />
  );
 }
