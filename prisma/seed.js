@@ -100,6 +100,7 @@ const challengeCards = [
             { key: 'caller_name', label: 'Caller', type: 'text', value: { text: 'Bezawilt' } },
             { key: 'caller_status', label: 'Status', type: 'text', value: { text: 'Calling...' } },
             { key: 'phone', label: 'Phone', type: 'text', value: { text: '+1-123-51231-23' } },
+            { key: 'avatar_image', label: 'Avatar Image', type: 'image', value: { text: '' } },
             { key: 'caller_title', label: 'Caller Title', type: 'text', value: { text: 'Community Health Worker' } },
             { key: 'caller_location', label: 'Location', type: 'text', value: { text: 'Dire Dawa' } },
             { key: 'agency', label: 'Agency', type: 'text', value: { text: 'EPHI Call Centre' } },

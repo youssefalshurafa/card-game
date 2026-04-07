@@ -1,5 +1,11 @@
 import { prisma } from '../../../../lib/prisma';
 
+const EXTRA_EDITABLE_FIELDS = {
+  'hotline-call': {
+    avatar_image: { label: 'Avatar Image', type: 'image' },
+  },
+};
+
 export async function GET(request, { params }) {
   const { id } = await params;
 
@@ -45,7 +51,15 @@ export async function PUT(request, { params }) {
   }
 
   const updates = [];
+  const metadata = card.metadataJson ? JSON.parse(card.metadataJson) : {};
+  const cardType = metadata.cardType ?? metadata.sourceKind ?? null;
+  const extraFields = EXTRA_EDITABLE_FIELDS[cardType] ?? {};
+
   for (const face of card.faces) {
+    const existingKeys = new Set(face.elements.map((element) => element.key));
+    const nextSortOrder = face.elements.reduce((maxSortOrder, element) => Math.max(maxSortOrder, element.sortOrder ?? 0), -1) + 1;
+    let appendedCount = 0;
+
     for (const element of face.elements) {
       if (Object.prototype.hasOwnProperty.call(fields, element.key)) {
         const currentValue = element.valueJson ? JSON.parse(element.valueJson) : {};
@@ -57,6 +71,27 @@ export async function PUT(request, { params }) {
           })
         );
       }
+    }
+
+    for (const [fieldKey, definition] of Object.entries(extraFields)) {
+      if (!Object.prototype.hasOwnProperty.call(fields, fieldKey) || existingKeys.has(fieldKey)) {
+        continue;
+      }
+
+      updates.push(
+        prisma.cardElement.create({
+          data: {
+            faceId: face.id,
+            key: fieldKey,
+            label: definition.label,
+            type: definition.type,
+            valueJson: JSON.stringify({ text: fields[fieldKey] }),
+            sortOrder: nextSortOrder + appendedCount,
+          },
+        })
+      );
+
+      appendedCount += 1;
     }
   }
 

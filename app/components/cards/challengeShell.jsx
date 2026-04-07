@@ -48,6 +48,12 @@ const THEMES = {
   headerColor: '#09a2a6',
   starCapsuleColor: '#177d93',
  },
+ '7A': {
+  frameColor: '#c41645',
+  shellColor: '#d7d8dc',
+  headerColor: '#f11746',
+  starCapsuleColor: '#c82a4b',
+ },
 };
 
 function HeaderStars({ level }) {
@@ -65,7 +71,7 @@ export function getChallengeShellTheme(card) {
  return THEMES[challengeNumber] ?? THEMES['1A'];
 }
 
-export function ChallengePdfShell({ card, children, className = '' }) {
+function BaseChallengeShell({ card, children, className = '' }) {
  const difficulty = getDifficulty(card);
  const theme = getChallengeShellTheme(card);
 
@@ -115,4 +121,12 @@ export function ChallengePdfShell({ card, children, className = '' }) {
    <div className="relative flex-1">{children}</div>
   </div>
  );
+}
+
+export function ChallengePdfShell(props) {
+ return <BaseChallengeShell {...props} />;
+}
+
+export function ChallengeCardShell(props) {
+ return <BaseChallengeShell {...props} />;
 }
