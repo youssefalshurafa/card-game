@@ -9,34 +9,13 @@ import { buildFieldsFromCard } from './cards/utils';
 export default function CardEditor({ card, savedSets = [] }) {
  const router = useRouter();
  const [fields, setFields] = useState(() => buildFieldsFromCard(card));
- const [dirty, setDirty] = useState(false);
- const [saving, setSaving] = useState(false);
  const [savingCopy, setSavingCopy] = useState(false);
- const [lastSaved, setLastSaved] = useState(null);
  const [copyError, setCopyError] = useState('');
  const [targetSetSlug, setTargetSetSlug] = useState(() => savedSets.find((set) => set.id === card.deckId)?.slug ?? savedSets[0]?.slug ?? '');
 
  const handleFieldChange = useCallback((key, value) => {
   setFields((prev) => ({ ...prev, [key]: value }));
-  setDirty(true);
  }, []);
-
- const handleSave = useCallback(async () => {
-  setSaving(true);
-  try {
-   const res = await fetch(`/api/cards/${card.id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ fields }),
-   });
-   if (res.ok) {
-    setDirty(false);
-    setLastSaved(new Date().toLocaleTimeString());
-   }
-  } finally {
-   setSaving(false);
-  }
- }, [card.id, fields]);
 
  const handleSaveCopy = useCallback(async () => {
   setSavingCopy(true);
@@ -98,8 +77,6 @@ export default function CardEditor({ card, savedSets = [] }) {
      {copyError ? <p className="mt-1 text-[10px] text-rose-400">{copyError}</p> : null}
     </div>
     <div className="flex items-center gap-3">
-     {lastSaved && !dirty && <span className="text-[10px] text-green-400">Saved at {lastSaved}</span>}
-     {dirty && <span className="text-xs text-amber-400">Unsaved changes</span>}
      <select
       value={targetSetSlug}
       onChange={(event) => setTargetSetSlug(event.target.value)}
@@ -122,13 +99,6 @@ export default function CardEditor({ card, savedSets = [] }) {
       className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/20 disabled:opacity-40"
      >
       {savingCopy ? 'Saving Copy...' : 'Save to Selected Set'}
-     </button>
-     <button
-      onClick={handleSave}
-      disabled={!dirty || saving}
-      className="rounded-lg bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-blue-500 disabled:opacity-40"
-     >
-      {saving ? 'Saving...' : 'Save'}
      </button>
     </div>
    </div>
