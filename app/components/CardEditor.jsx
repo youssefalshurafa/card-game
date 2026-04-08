@@ -11,6 +11,7 @@ export default function CardEditor({ card, savedSets = [] }) {
  const [fields, setFields] = useState(() => buildFieldsFromCard(card));
  const [difficulty, setDifficulty] = useState(card.metadata?.difficulty ?? 1);
  const [savingCopy, setSavingCopy] = useState(false);
+ const [deleting, setDeleting] = useState(false);
  const [copyError, setCopyError] = useState('');
  const [targetSetSlug, setTargetSetSlug] = useState(() => savedSets.find((set) => set.id === card.deckId)?.slug ?? savedSets[0]?.slug ?? '');
 
@@ -50,7 +51,36 @@ export default function CardEditor({ card, savedSets = [] }) {
   } finally {
    setSavingCopy(false);
   }
- }, [card.id, fields, router, targetSetSlug]);
+ }, [card.id, difficulty, fields, router, targetSetSlug]);
+
+ const handleDelete = useCallback(async () => {
+  const confirmed = window.confirm(`Delete "${card.name}" from its set? This cannot be undone.`);
+
+  if (!confirmed) {
+   return;
+  }
+
+  setDeleting(true);
+  setCopyError('');
+
+  try {
+   const res = await fetch(`/api/cards/${card.id}`, {
+    method: 'DELETE',
+   });
+
+   if (!res.ok && res.status !== 204) {
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.error || 'Unable to delete card.');
+   }
+
+   router.push('/');
+   router.refresh();
+  } catch (error) {
+   setCopyError(error instanceof Error ? error.message : 'Unable to delete card.');
+  } finally {
+   setDeleting(false);
+  }
+ }, [card.id, card.name, router]);
 
  const editableCard = {
   ...card,
@@ -111,10 +141,17 @@ export default function CardEditor({ card, savedSets = [] }) {
      </select>
      <button
       onClick={handleSaveCopy}
-      disabled={savingCopy || targetSetSlug === ''}
+      disabled={savingCopy || deleting || targetSetSlug === ''}
       className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-300 transition-colors hover:bg-emerald-500/20 disabled:opacity-40"
      >
       {savingCopy ? 'Saving Copy...' : 'Save to Selected Set'}
+     </button>
+     <button
+      onClick={handleDelete}
+      disabled={savingCopy || deleting}
+      className="rounded-lg border border-rose-500/30 bg-rose-500/10 px-4 py-1.5 text-sm font-medium text-rose-300 transition-colors hover:bg-rose-500/20 disabled:opacity-40"
+     >
+      {deleting ? 'Deleting...' : 'Delete Card'}
      </button>
     </div>
    </div>

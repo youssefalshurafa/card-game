@@ -127,3 +127,20 @@ export async function PUT(request, { params }) {
 
   return Response.json({ success: true });
 }
+
+export async function DELETE(_request, { params }) {
+  const { id } = await params;
+
+  const card = await prisma.card.findUnique({
+    where: { id },
+    select: { id: true },
+  });
+
+  if (!card) {
+    return Response.json({ error: 'Card not found' }, { status: 404 });
+  }
+
+  await prisma.card.delete({ where: { id } });
+
+  return new Response(null, { status: 204 });
+}
