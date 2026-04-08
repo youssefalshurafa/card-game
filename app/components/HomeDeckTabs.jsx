@@ -11,6 +11,7 @@ function sortSavedSets(decks) {
 export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
  const router = useRouter();
  const [activeTab, setActiveTab] = useState('default');
+ const [localDefaultDeck, setLocalDefaultDeck] = useState(defaultDeck);
  const [localSavedSets, setLocalSavedSets] = useState(() => sortSavedSets(savedSets));
  const [activeSavedSetSlug, setActiveSavedSetSlug] = useState(savedSets[0]?.slug ?? null);
  const [newSetName, setNewSetName] = useState('');
@@ -24,10 +25,11 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
  const [newCardName, setNewCardName] = useState('');
  const [newCardType, setNewCardType] = useState('breaking-news');
  const [isCreatingCard, setIsCreatingCard] = useState(false);
+ const [deletingCardId, setDeletingCardId] = useState(null);
 
  const orderedSavedSets = useMemo(() => sortSavedSets(localSavedSets), [localSavedSets]);
  const activeSavedSet = orderedSavedSets.find((deck) => deck.slug === activeSavedSetSlug) ?? orderedSavedSets[0] ?? null;
- const activeCards = activeTab === 'default' ? (defaultDeck?.cards ?? []) : (activeSavedSet?.cards ?? []);
+ const activeCards = activeTab === 'default' ? (localDefaultDeck?.cards ?? []) : (activeSavedSet?.cards ?? []);
 
  async function handleCreateSet(event) {
   event.preventDefault();
@@ -148,6 +150,45 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
   }
  }
 
+ async function handleDeleteCard(card) {
+  if (!window.confirm(`Delete "${card.name}" from this set? This cannot be undone.`)) {
+   return;
+  }
+
+  setCreateError('');
+  setDeletingCardId(card.id);
+
+  try {
+   const res = await fetch(`/api/cards/${card.id}`, {
+    method: 'DELETE',
+   });
+
+   if (!res.ok && res.status !== 204) {
+    const data = await res.json().catch(() => null);
+    throw new Error(data?.error || 'Unable to delete card.');
+   }
+
+   if (activeTab === 'default') {
+    setLocalDefaultDeck((prev) =>
+     prev
+      ? {
+         ...prev,
+         cards: prev.cards.filter((item) => item.id !== card.id),
+        }
+      : prev,
+    );
+   } else {
+    setLocalSavedSets((prev) => prev.map((deck) => (deck.id === activeSavedSet?.id ? { ...deck, cards: deck.cards.filter((item) => item.id !== card.id) } : deck)));
+   }
+
+   router.refresh();
+  } catch (error) {
+   setCreateError(error instanceof Error ? error.message : 'Unable to delete card.');
+  } finally {
+   setDeletingCardId(null);
+  }
+ }
+
  return (
   <div>
    <div className="border-b border-white/10">
@@ -187,7 +228,11 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
       </div>
 
       {activeCards.length > 0 ? (
-       <CardGallery cards={activeCards} />
+       <CardGallery
+        cards={activeCards}
+        onDeleteCard={handleDeleteCard}
+        deletingCardId={deletingCardId}
+       />
       ) : (
        <div className="rounded-3xl border border-dashed border-white/15 bg-slate-950/40 px-8 py-14 text-center">
         <h3 className="text-lg font-semibold text-white">No cards in the default set</h3>
@@ -379,7 +424,11 @@ export default function HomeDeckTabs({ projectSlug, defaultDeck, savedSets }) {
         ) : null}
 
         {activeCards.length > 0 ? (
-         <CardGallery cards={activeCards} />
+         <CardGallery
+          cards={activeCards}
+          onDeleteCard={handleDeleteCard}
+          deletingCardId={deletingCardId}
+         />
         ) : (
          <div className="rounded-3xl border border-dashed border-white/15 bg-slate-950/40 px-8 py-14 text-center">
           <h3 className="text-lg font-semibold text-white">This saved set is empty</h3>
